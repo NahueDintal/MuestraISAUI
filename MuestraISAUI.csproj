@@ -38,6 +38,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Forms/FrmInicio.cs" />
     <Compile Include="Forms/FrmInicio.Designer.cs" />
+    <Compile Include="Forms/FrmDatosPersonales.cs" />
+    <Compile Include="Forms/FrmDatosPersonales.Designer.cs" />
     <Compile Include="Forms/FrmAgregar.cs" />
     <Compile Include="Forms/FrmAgregar.Designer.cs" />
     <Compile Include="Forms/FrmListar.cs" />

@@ -10,7 +10,7 @@ namespace MuestraISAUI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Forms.FrmInicio());
+            Application.Run(new Forms.FrmDatosPersonales());
         }
     }
 }
