@@ -1,106 +1,127 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using MuestraISAUI.Clases;
 
 namespace MuestraISAUI.Forms
 {
     public partial class FrmDatosPersonales : Form
     {
         private TextBox txtNombre;
-        private DateTimePicker dtpFechaNacimiento;
+        private TextBox txtApellido;
+        private TextBox txtDocumento;
+        private ComboBox cmbSigno;
         private Button btnAceptar;
         private Button btnCancelar;
-        private Label lblNombre;
-        private Label lblFechaNacimiento;
-        private Label lblResultado;
+        private Label lblNombre, lblApellido, lblDocumento, lblSigno;
+        
+        private ServicioAstral _servicioAstral;
 
         public FrmDatosPersonales()
         {
             InitializeComponent();
+            _servicioAstral = new ServicioAstral();
+            CargarSignos();
+        }
+
+        private void CargarSignos()
+        {
+            cmbSigno.Items.Clear();
+            foreach (var signo in _servicioAstral.ObtenerSignosDisponibles())
+            {
+                cmbSigno.Items.Add(signo);
+            }
+            cmbSigno.SelectedIndex = 0;
         }
 
         private void InitializeComponent()
         {
             // Configuración del formulario
-            this.Text = "Ingreso de Datos Personales";
-            this.Size = new Size(400, 300);
+            this.Text = "🌟 Empandas Estelares - Tu Destino Cósmico 🌟";
+            this.Size = new Size(450, 350);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.BackColor = Color.Navy;
+            this.ForeColor = Color.White;
 
-            // Label para Nombre
-            lblNombre = new Label();
-            lblNombre.Text = "Nombre Completo:";
-            lblNombre.Location = new Point(20, 30);
-            lblNombre.Size = new Size(150, 20);
-            lblNombre.Font = new Font("Arial", 10, FontStyle.Bold);
+            // Labels
+            lblNombre = CrearLabel("Nombre:", 20, 30);
+            lblApellido = CrearLabel("Apellido:", 20, 80);
+            lblDocumento = CrearLabel("Documento:", 20, 130);
+            lblSigno = CrearLabel("Tu Signo Zodiacal:", 20, 180);
 
-            // TextBox para Nombre
-            txtNombre = new TextBox();
-            txtNombre.Location = new Point(180, 30);
-            txtNombre.Size = new Size(180, 25);
-            txtNombre.Font = new Font("Arial", 10);
-            txtNombre.MaxLength = 100;
-            txtNombre.TabIndex = 0;
+            // TextBoxes
+            txtNombre = CrearTextBox(150, 30);
+            txtApellido = CrearTextBox(150, 80);
+            txtDocumento = CrearTextBox(150, 130);
 
-            // Label para Fecha de Nacimiento
-            lblFechaNacimiento = new Label();
-            lblFechaNacimiento.Text = "Fecha de Nacimiento:";
-            lblFechaNacimiento.Location = new Point(20, 80);
-            lblFechaNacimiento.Size = new Size(150, 20);
-            lblFechaNacimiento.Font = new Font("Arial", 10, FontStyle.Bold);
+            // ComboBox para Signos
+            cmbSigno = new ComboBox();
+            cmbSigno.Location = new Point(150, 180);
+            cmbSigno.Size = new Size(200, 25);
+            cmbSigno.Font = new Font("Arial", 10);
+            cmbSigno.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbSigno.BackColor = Color.White;
+            cmbSigno.ForeColor = Color.Black;
 
-            // DateTimePicker para Fecha de Nacimiento
-            dtpFechaNacimiento = new DateTimePicker();
-            dtpFechaNacimiento.Location = new Point(180, 80);
-            dtpFechaNacimiento.Size = new Size(180, 25);
-            dtpFechaNacimiento.Font = new Font("Arial", 10);
-            dtpFechaNacimiento.Format = DateTimePickerFormat.Short;
-            dtpFechaNacimiento.MaxDate = DateTime.Today;
-            dtpFechaNacimiento.TabIndex = 1;
+            // Botones
+            btnAceptar = CrearBoton("✨ Descubre tu Destino", 100, 230, Color.Gold);
+            btnCancelar = CrearBoton("🚪 Salir", 250, 230, Color.Silver);
 
-            // Botón Aceptar
-            btnAceptar = new Button();
-            btnAceptar.Text = "Aceptar";
-            btnAceptar.Location = new Point(100, 150);
-            btnAceptar.Size = new Size(80, 30);
-            btnAceptar.Font = new Font("Arial", 10);
-            btnAceptar.TabIndex = 2;
             btnAceptar.Click += new EventHandler(btnAceptar_Click);
-
-            // Botón Cancelar
-            btnCancelar = new Button();
-            btnCancelar.Text = "Cancelar";
-            btnCancelar.Location = new Point(200, 150);
-            btnCancelar.Size = new Size(80, 30);
-            btnCancelar.Font = new Font("Arial", 10);
-            btnCancelar.TabIndex = 3;
             btnCancelar.Click += new EventHandler(btnCancelar_Click);
 
-            // Label para mostrar resultados
-            lblResultado = new Label();
-            lblResultado.Text = "";
-            lblResultado.Location = new Point(20, 200);
-            lblResultado.Size = new Size(340, 40);
-            lblResultado.Font = new Font("Arial", 9);
-            lblResultado.ForeColor = Color.Blue;
+            // Agregar controles
+            this.Controls.AddRange(new Control[] {
+                lblNombre, lblApellido, lblDocumento, lblSigno,
+                txtNombre, txtApellido, txtDocumento, cmbSigno,
+                btnAceptar, btnCancelar
+            });
+        }
 
-            // Agregar controles al formulario
-            this.Controls.Add(lblNombre);
-            this.Controls.Add(txtNombre);
-            this.Controls.Add(lblFechaNacimiento);
-            this.Controls.Add(dtpFechaNacimiento);
-            this.Controls.Add(btnAceptar);
-            this.Controls.Add(btnCancelar);
-            this.Controls.Add(lblResultado);
+        private Label CrearLabel(string texto, int x, int y)
+        {
+            return new Label
+            {
+                Text = texto,
+                Location = new Point(x, y),
+                Size = new Size(120, 20),
+                Font = new Font("Arial", 10, FontStyle.Bold),
+                ForeColor = Color.Gold
+            };
+        }
+
+        private TextBox CrearTextBox(int x, int y)
+        {
+            return new TextBox
+            {
+                Location = new Point(x, y),
+                Size = new Size(200, 25),
+                Font = new Font("Arial", 10)
+            };
+        }
+
+        private Button CrearBoton(string texto, int x, int y, Color colorFondo)
+        {
+            return new Button
+            {
+                Text = texto,
+                Location = new Point(x, y),
+                Size = new Size(140, 35),
+                Font = new Font("Arial", 9, FontStyle.Bold),
+                BackColor = colorFondo,
+                ForeColor = Color.Black,
+                FlatStyle = FlatStyle.Flat
+            };
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)
         {
             if (ValidarDatos())
             {
-                MostrarResultado();
+                RevelarDestinoCosmico();
             }
         }
 
@@ -111,61 +132,108 @@ namespace MuestraISAUI.Forms
 
         private bool ValidarDatos()
         {
-            // Validar que el nombre no esté vacío
-            if (string.IsNullOrWhiteSpace(txtNombre.Text))
+            if (string.IsNullOrWhiteSpace(txtNombre.Text) || 
+                string.IsNullOrWhiteSpace(txtApellido.Text))
             {
-                MessageBox.Show("Por favor, ingrese un nombre válido.", 
-                              "Error de Validación", 
+                MessageBox.Show("Por favor, completa tu nombre y apellido.", 
+                              "Datos Incompletos", 
                               MessageBoxButtons.OK, 
                               MessageBoxIcon.Warning);
-                txtNombre.Focus();
                 return false;
             }
-
-            // Validar que la fecha no sea futura (ya está controlado por MaxDate)
-            // Validar que la persona tenga al menos 1 año
-            DateTime fechaMinima = DateTime.Today.AddYears(-100);
-            if (dtpFechaNacimiento.Value < fechaMinima)
-            {
-                MessageBox.Show("Por favor, ingrese una fecha de nacimiento válida.", 
-                              "Error de Validación", 
-                              MessageBoxButtons.OK, 
-                              MessageBoxIcon.Warning);
-                dtpFechaNacimiento.Focus();
-                return false;
-            }
-
             return true;
         }
 
-        private void MostrarResultado()
-        {
-            string nombre = txtNombre.Text.Trim();
-            DateTime fechaNacimiento = dtpFechaNacimiento.Value;
-            int edad = CalcularEdad(fechaNacimiento);
-
-            string resultado = $"Nombre: {nombre}\n" +
-                             $"Fecha de Nacimiento: {fechaNacimiento:dd/MM/yyyy}\n" +
-                             $"Edad: {edad} años";
-
-            lblResultado.Text = resultado;
-
-            // También mostrar en MessageBox
-            MessageBox.Show(resultado, "Datos Ingresados", 
-                          MessageBoxButtons.OK, 
-                          MessageBoxIcon.Information);
-        }
-
-        private int CalcularEdad(DateTime fechaNacimiento)
-        {
-            DateTime hoy = DateTime.Today;
-            int edad = hoy.Year - fechaNacimiento.Year;
-            
-            // Ajustar si aún no ha pasado el cumpleaños este año
-            if (fechaNacimiento.Date > hoy.AddYears(-edad))
-                edad--;
-
-            return edad;
-        }
+    //     private void RevelarDestinoCosmico()
+    //     {
+    //         string nombre = txtNombre.Text.Trim();
+    //         string apellido = txtApellido.Text.Trim();
+    //         string documento = txtDocumento.Text.Trim();
+    //         string signo = cmbSigno.SelectedItem.ToString();
+    //
+    //         var (sabor, lore, precio) = _servicioAstral.ObtenerEmpanadaDestino(signo);
+    //
+    //         string mensajeCosmico = $"""
+    //         🌟 **REVELACIÓN ASTRAL GASTRONÓMICA** 🌟
+    //
+    //         **{nombre} {apellido}**, eres del signo **{signo}**
+    //
+    //         ✨ *El universo ha hablado:* ✨
+    //         Tu empanada del destino es:
+    //         🥟 **{sabor}** 🥟
+    //
+    //         💰 **Precio Cósmico:** ${precio}
+    //
+    //         📜 *Sabiduría astral:*
+    //         {lore}
+    //
+    //         ¿Aceptas tu destino empanaderil?
+    //         """;
+    //
+    //         var resultado = MessageBox.Show(mensajeCosmico, 
+    //                                      "¡REVELACIÓN CÓSMICA!", 
+    //                                      MessageBoxButtons.YesNo, 
+    //                                      MessageBoxIcon.Question);
+    //
+    //         if (resultado == DialogResult.Yes)
+    //         {
+    //             // Guardar cliente y proceder con la venta
+    //             GuardarClienteYVenta(nombre, apellido, documento, signo, sabor, precio, lore);
+    //         }
+    //     }
+    //
+    //     private void GuardarClienteYVenta(string nombre, string apellido, string documento, 
+    //                                     string signo, string sabor, decimal precio, string lore)
+    //     {
+    //         try
+    //         {
+    //             // Guardar cliente
+    //             var cliente = new Cliente();
+    //             cliente.Insertar(nombre, apellido, documento, signo, sabor);
+    //
+    //             // Registrar venta
+    //             var venta = new Venta();
+    //             venta.RegistrarVenta(0, $"{nombre} {apellido}", signo, sabor, precio, lore);
+    //
+    //             // Mostrar ticket
+    //             MostrarTicketCosmico(nombre, apellido, signo, sabor, precio, lore);
+    //
+    //             this.Close();
+    //         }
+    //         catch (Exception ex)
+    //         {
+    //             MessageBox.Show($"Error cósmico: {ex.Message}", "Error", 
+    //                           MessageBoxButtons.OK, MessageBoxIcon.Error);
+    //         }
+    //     }
+    //
+    //     private void MostrarTicketCosmico(string nombre, string apellido, string signo, 
+    //                                     string sabor, decimal precio, string lore)
+    //     {
+    //         string ticket = $"""
+    //         ╔═══════════════════════════════════════╗
+    //         ║        🌟 EMPANADAS ESTELARES 🌟     ║
+    //         ║     *Donde los astros saben de sabores*║
+    //         ╠═══════════════════════════════════════╣
+    //         ║ Cliente: {nombre} {apellido,-15} 🌟║
+    //         ║ Signo Zodiacal: {signo,-12} ♈║
+    //         ╠═══════════════════════════════════════╣
+    //         ║         🥟 EMPANADA DEL DESTINO 🥟   ║
+    //         ║           **{sabor}**            ║
+    //         ╠═══════════════════════════════════════╣
+    //         ║ Precio Cósmico: ${precio}            ║
+    //         ╠═══════════════════════════════════════╣
+    //         ║           📜 SABIDURÍA CÓSMICA 📜    ║
+    //         ║ {lore,-37} ║
+    //         ╠═══════════════════════════════════════╣
+    //         ║                                       ║
+    //         ║ ¡Que los astros bendigan tu paladar!  ║
+    //         ║     ✨🍽️✨                           ║
+    //         ╚═══════════════════════════════════════╝
+    //         """;
+    //
+    //         MessageBox.Show(ticket, "🎉 ¡DESTINO CUMPLIDO!", 
+    //                       MessageBoxButtons.OK, MessageBoxIcon.Information);
+    //     }
     }
 }

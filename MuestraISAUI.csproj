@@ -36,6 +36,11 @@
 
   <ItemGroup>
     <Compile Include="Program.cs" />
+    <Compile Include="Clases/Cliente.cs" />
+    <Compile Include="Clases/ConexionBD.cs" />
+    <Compile Include="Clases/Empanada.cs" />
+    <Compile Include="Clases/Venta.cs" />
+    <Compile Include="Clases/Zodiacal.cs" />
     <Compile Include="Forms/FrmInicio.cs" />
     <Compile Include="Forms/FrmInicio.Designer.cs" />
     <Compile Include="Forms/FrmDatosPersonales.cs" />
