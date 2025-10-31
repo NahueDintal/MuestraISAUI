@@ -15,19 +15,19 @@ namespace MuestraISAUI.Forms
         private Button btnCancelar;
         private Label lblNombre, lblApellido, lblDocumento, lblSigno;
         
-        private ServicioAstral _servicioAstral;
+        private Zodiacal _zodiacal;
 
         public FrmDatosPersonales()
         {
             InitializeComponent();
-            _servicioAstral = new ServicioAstral();
+            _zodiacal = new Zodiacal();
             CargarSignos();
         }
 
         private void CargarSignos()
         {
             cmbSigno.Items.Clear();
-            foreach (var signo in _servicioAstral.ObtenerSignosDisponibles())
+            foreach (var signo in _zodiacal.ObtenerSignosDisponibles())
             {
                 cmbSigno.Items.Add(signo);
             }
@@ -121,7 +121,7 @@ namespace MuestraISAUI.Forms
         {
             if (ValidarDatos())
             {
-                RevelarDestinoCosmico();
+                //RevelarDestinoCosmico();
             }
         }
 

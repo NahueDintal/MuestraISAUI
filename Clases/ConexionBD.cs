@@ -12,7 +12,7 @@ namespace MuestraISAUI.Clases
     {
       using (SqlConnection conexion = new SqlConnection(connectionString))
       {
-        SqlCommand comando = new SqlCommand(Sql, conexion);
+        SqlCommand comando = new SqlCommand(sql, conexion);
         SqlDataAdapter adaptador = new SqlDataAdapter(comando);
         DataTable tabla = new DataTable();
         adaptador.Fill(tabla);
