@@ -1,7 +1,0 @@
-/home/nahuedintal/Estudio/MuestraISAUI/bin/Debug/MuestraISAUI.exe.config
-/home/nahuedintal/Estudio/MuestraISAUI/bin/Debug/MuestraISAUI.exe
-/home/nahuedintal/Estudio/MuestraISAUI/bin/Debug/MuestraISAUI.pdb
-/home/nahuedintal/Estudio/MuestraISAUI/obj/Debug/MuestraISAUI.csproj.AssemblyReference.cache
-/home/nahuedintal/Estudio/MuestraISAUI/obj/Debug/MuestraISAUI.csproj.CoreCompileInputs.cache
-/home/nahuedintal/Estudio/MuestraISAUI/obj/Debug/MuestraISAUI.exe
-/home/nahuedintal/Estudio/MuestraISAUI/obj/Debug/MuestraISAUI.pdb
