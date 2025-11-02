@@ -1,0 +1,2 @@
+1|definir clases|Sin fecha|Sin descripción|Sin tipo|media
+2|investigar estructura de clases|Sin fecha|Sin descripción|Sin tipo|media

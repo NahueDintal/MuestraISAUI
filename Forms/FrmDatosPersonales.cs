@@ -1,7 +1,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using MuestraISAUI.Clases;
+using MuestraISAUI.Clases.Servicios;
 
 namespace MuestraISAUI.Forms
 {
@@ -15,66 +15,82 @@ namespace MuestraISAUI.Forms
         private Button btnCancelar;
         private Label lblNombre, lblApellido, lblDocumento, lblSigno;
         
-        private Zodiacal _zodiacal;
+        private readonly ServicioZodiacal _servicioZodiacal;
+        private readonly ServicioVentas _servicioVentas;
 
         public FrmDatosPersonales()
         {
             InitializeComponent();
-            _zodiacal = new Zodiacal();
+            _servicioZodiacal = new ServicioZodiacal();
+            _servicioVentas = new ServicioVentas();
             CargarSignos();
         }
 
         private void CargarSignos()
         {
             cmbSigno.Items.Clear();
-            foreach (var signo in _zodiacal.ObtenerSignosDisponibles())
+            foreach (var signo in _servicioZodiacal.ObtenerSignosZodiacales())
             {
                 cmbSigno.Items.Add(signo);
             }
-            cmbSigno.SelectedIndex = 0;
+            if (cmbSigno.Items.Count > 0)
+                cmbSigno.SelectedIndex = 0;
         }
 
         private void InitializeComponent()
         {
             // Configuración del formulario
-            this.Text = "🌟 Empandas Estelares - Tu Destino Cósmico 🌟";
-            this.Size = new Size(450, 350);
+            this.Text = "🌟 EMPANADAS ESTELARES - Tu Destino Cósmico 🌟";
+            this.Size = new Size(500, 400);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.BackColor = Color.Navy;
+            this.BackColor = Color.MidnightBlue;
             this.ForeColor = Color.White;
+            this.Font = new Font("Segoe UI", 10);
+
+            // Título épico
+            var lblTitulo = new Label
+            {
+                Text = "🎭 EL GRAN TORNEO CULINARIO DEL ZODIACO 🎭",
+                Location = new Point(20, 20),
+                Size = new Size(460, 30),
+                Font = new Font("Segoe UI", 12, FontStyle.Bold),
+                ForeColor = Color.Gold,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
 
             // Labels
-            lblNombre = CrearLabel("Nombre:", 20, 30);
-            lblApellido = CrearLabel("Apellido:", 20, 80);
-            lblDocumento = CrearLabel("Documento:", 20, 130);
-            lblSigno = CrearLabel("Tu Signo Zodiacal:", 20, 180);
+            lblNombre = CrearLabel("Nombre del Aventurero:", 20, 70);
+            lblApellido = CrearLabel("Apellido del Guerrero:", 20, 120);
+            lblDocumento = CrearLabel("Documento de Identidad:", 20, 170);
+            lblSigno = CrearLabel("Tu Signo Zodiacal:", 20, 220);
 
             // TextBoxes
-            txtNombre = CrearTextBox(150, 30);
-            txtApellido = CrearTextBox(150, 80);
-            txtDocumento = CrearTextBox(150, 130);
+            txtNombre = CrearTextBox(220, 70);
+            txtApellido = CrearTextBox(220, 120);
+            txtDocumento = CrearTextBox(220, 170);
 
             // ComboBox para Signos
             cmbSigno = new ComboBox();
-            cmbSigno.Location = new Point(150, 180);
+            cmbSigno.Location = new Point(220, 220);
             cmbSigno.Size = new Size(200, 25);
-            cmbSigno.Font = new Font("Arial", 10);
+            cmbSigno.Font = new Font("Segoe UI", 10);
             cmbSigno.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbSigno.BackColor = Color.White;
             cmbSigno.ForeColor = Color.Black;
 
             // Botones
-            btnAceptar = CrearBoton("✨ Descubre tu Destino", 100, 230, Color.Gold);
-            btnCancelar = CrearBoton("🚪 Salir", 250, 230, Color.Silver);
+            btnAceptar = CrearBoton("✨ DESCUBRIR MI DESTINO ✨", 120, 280, Color.Gold, Color.Black);
+            btnCancelar = CrearBoton("🚪 ABANDONAR EL TORNEO", 280, 280, Color.Red, Color.White);
 
             btnAceptar.Click += new EventHandler(btnAceptar_Click);
             btnCancelar.Click += new EventHandler(btnCancelar_Click);
 
             // Agregar controles
             this.Controls.AddRange(new Control[] {
+                lblTitulo,
                 lblNombre, lblApellido, lblDocumento, lblSigno,
                 txtNombre, txtApellido, txtDocumento, cmbSigno,
                 btnAceptar, btnCancelar
@@ -87,9 +103,9 @@ namespace MuestraISAUI.Forms
             {
                 Text = texto,
                 Location = new Point(x, y),
-                Size = new Size(120, 20),
-                Font = new Font("Arial", 10, FontStyle.Bold),
-                ForeColor = Color.Gold
+                Size = new Size(190, 25),
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                ForeColor = Color.LightSkyBlue
             };
         }
 
@@ -99,21 +115,24 @@ namespace MuestraISAUI.Forms
             {
                 Location = new Point(x, y),
                 Size = new Size(200, 25),
-                Font = new Font("Arial", 10)
+                Font = new Font("Segoe UI", 10),
+                BackColor = Color.White,
+                ForeColor = Color.Black
             };
         }
 
-        private Button CrearBoton(string texto, int x, int y, Color colorFondo)
+        private Button CrearBoton(string texto, int x, int y, Color colorFondo, Color colorTexto)
         {
             return new Button
             {
                 Text = texto,
                 Location = new Point(x, y),
-                Size = new Size(140, 35),
-                Font = new Font("Arial", 9, FontStyle.Bold),
+                Size = new Size(200, 40),
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
                 BackColor = colorFondo,
-                ForeColor = Color.Black,
-                FlatStyle = FlatStyle.Flat
+                ForeColor = colorTexto,
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
             };
         }
 
@@ -121,119 +140,98 @@ namespace MuestraISAUI.Forms
         {
             if (ValidarDatos())
             {
-                //RevelarDestinoCosmico();
+                RevelarDestinoCosmico();
             }
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            this.Close();
+            var resultado = MessageBox.Show(
+                "¿Estás seguro de abandonar el Gran Torneo Culinario?\n\nLos astros se entristecerán...",
+                "⚠️ CONFIRMAR SALIDA",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (resultado == DialogResult.Yes)
+            {
+                this.Close();
+            }
         }
 
         private bool ValidarDatos()
         {
-            if (string.IsNullOrWhiteSpace(txtNombre.Text) || 
-                string.IsNullOrWhiteSpace(txtApellido.Text))
+            if (string.IsNullOrWhiteSpace(txtNombre.Text))
             {
-                MessageBox.Show("Por favor, completa tu nombre y apellido.", 
-                              "Datos Incompletos", 
-                              MessageBoxButtons.OK, 
-                              MessageBoxIcon.Warning);
+                MostrarError("Por favor, ingresa tu nombre de aventurero.");
+                txtNombre.Focus();
                 return false;
             }
+
+            if (string.IsNullOrWhiteSpace(txtApellido.Text))
+            {
+                MostrarError("Todo guerrero necesita un apellido para la historia.");
+                txtApellido.Focus();
+                return false;
+            }
+
+            if (cmbSigno.SelectedItem == null)
+            {
+                MostrarError("Debes elegir tu signo zodiacal para conocer tu destino.");
+                cmbSigno.Focus();
+                return false;
+            }
+
             return true;
         }
 
-    //     private void RevelarDestinoCosmico()
-    //     {
-    //         string nombre = txtNombre.Text.Trim();
-    //         string apellido = txtApellido.Text.Trim();
-    //         string documento = txtDocumento.Text.Trim();
-    //         string signo = cmbSigno.SelectedItem.ToString();
-    //
-    //         var (sabor, lore, precio) = _servicioAstral.ObtenerEmpanadaDestino(signo);
-    //
-    //         string mensajeCosmico = $"""
-    //         🌟 **REVELACIÓN ASTRAL GASTRONÓMICA** 🌟
-    //
-    //         **{nombre} {apellido}**, eres del signo **{signo}**
-    //
-    //         ✨ *El universo ha hablado:* ✨
-    //         Tu empanada del destino es:
-    //         🥟 **{sabor}** 🥟
-    //
-    //         💰 **Precio Cósmico:** ${precio}
-    //
-    //         📜 *Sabiduría astral:*
-    //         {lore}
-    //
-    //         ¿Aceptas tu destino empanaderil?
-    //         """;
-    //
-    //         var resultado = MessageBox.Show(mensajeCosmico, 
-    //                                      "¡REVELACIÓN CÓSMICA!", 
-    //                                      MessageBoxButtons.YesNo, 
-    //                                      MessageBoxIcon.Question);
-    //
-    //         if (resultado == DialogResult.Yes)
-    //         {
-    //             // Guardar cliente y proceder con la venta
-    //             GuardarClienteYVenta(nombre, apellido, documento, signo, sabor, precio, lore);
-    //         }
-    //     }
-    //
-    //     private void GuardarClienteYVenta(string nombre, string apellido, string documento, 
-    //                                     string signo, string sabor, decimal precio, string lore)
-    //     {
-    //         try
-    //         {
-    //             // Guardar cliente
-    //             var cliente = new Cliente();
-    //             cliente.Insertar(nombre, apellido, documento, signo, sabor);
-    //
-    //             // Registrar venta
-    //             var venta = new Venta();
-    //             venta.RegistrarVenta(0, $"{nombre} {apellido}", signo, sabor, precio, lore);
-    //
-    //             // Mostrar ticket
-    //             MostrarTicketCosmico(nombre, apellido, signo, sabor, precio, lore);
-    //
-    //             this.Close();
-    //         }
-    //         catch (Exception ex)
-    //         {
-    //             MessageBox.Show($"Error cósmico: {ex.Message}", "Error", 
-    //                           MessageBoxButtons.OK, MessageBoxIcon.Error);
-    //         }
-    //     }
-    //
-    //     private void MostrarTicketCosmico(string nombre, string apellido, string signo, 
-    //                                     string sabor, decimal precio, string lore)
-    //     {
-    //         string ticket = $"""
-    //         ╔═══════════════════════════════════════╗
-    //         ║        🌟 EMPANADAS ESTELARES 🌟     ║
-    //         ║     *Donde los astros saben de sabores*║
-    //         ╠═══════════════════════════════════════╣
-    //         ║ Cliente: {nombre} {apellido,-15} 🌟║
-    //         ║ Signo Zodiacal: {signo,-12} ♈║
-    //         ╠═══════════════════════════════════════╣
-    //         ║         🥟 EMPANADA DEL DESTINO 🥟   ║
-    //         ║           **{sabor}**            ║
-    //         ╠═══════════════════════════════════════╣
-    //         ║ Precio Cósmico: ${precio}            ║
-    //         ╠═══════════════════════════════════════╣
-    //         ║           📜 SABIDURÍA CÓSMICA 📜    ║
-    //         ║ {lore,-37} ║
-    //         ╠═══════════════════════════════════════╣
-    //         ║                                       ║
-    //         ║ ¡Que los astros bendigan tu paladar!  ║
-    //         ║     ✨🍽️✨                           ║
-    //         ╚═══════════════════════════════════════╝
-    //         """;
-    //
-    //         MessageBox.Show(ticket, "🎉 ¡DESTINO CUMPLIDO!", 
-    //                       MessageBoxButtons.OK, MessageBoxIcon.Information);
-    //     }
+        private void MostrarError(string mensaje)
+        {
+            MessageBox.Show(mensaje, "❌ DATOS INCOMPLETOS", 
+                          MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        private void RevelarDestinoCosmico()
+        {
+            try
+            {
+                string nombre = txtNombre.Text.Trim();
+                string apellido = txtApellido.Text.Trim();
+                string documento = txtDocumento.Text.Trim();
+                string signo = cmbSigno.SelectedItem.ToString();
+
+                // Descubrir destino usando el servicio
+                var (empanadaDestino, lore) = _servicioZodiacal.DescubrirDestinoEmpanaderil(signo);
+                
+                // Generar mensaje épico
+                string mensajeEpico = _servicioZodiacal.GenerarLoreEpico(nombre, signo, empanadaDestino);
+
+                // Mostrar revelación
+                var resultado = MessageBox.Show(mensajeEpico, 
+                    "🌟 ¡REVELACIÓN CÓSMICA!", 
+                    MessageBoxButtons.YesNo, 
+                    MessageBoxIcon.Question);
+
+                if (resultado == DialogResult.Yes)
+                {
+                    // Procesar venta épica
+                    int idVenta = _servicioVentas.ProcesarVentaEpica(nombre, apellido, documento, signo);
+                    
+                    MessageBox.Show(
+                        $"¡VENTA ÉPICA COMPLETADA!\n\nTu destino ha sido sellado con el ticket número: {idVenta}\n\n¡Que los astros bendigan tu paladar!",
+                        "🎉 DESTINO CUMPLIDO",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"❌ ERROR CÓSMICO: {ex.Message}", 
+                              "FALLA EN EL DESTINO", 
+                              MessageBoxButtons.OK, 
+                              MessageBoxIcon.Error);
+            }
+        }
     }
 }

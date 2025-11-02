@@ -36,21 +36,30 @@
 
   <ItemGroup>
     <Compile Include="Program.cs" />
-    <Compile Include="Clases/Cliente.cs" />
-    <Compile Include="Clases/ConexionBD.cs" />
-    <Compile Include="Clases/Empanada.cs" />
-    <Compile Include="Clases/Venta.cs" />
-    <Compile Include="Clases/Zodiacal.cs" />
-    <Compile Include="Forms/FrmInicio.cs" />
-    <Compile Include="Forms/FrmInicio.Designer.cs" />
-    <Compile Include="Forms/FrmDatosPersonales.cs" />
-    <Compile Include="Forms/FrmDatosPersonales.Designer.cs" />
-    <Compile Include="Forms/FrmAgregar.cs" />
-    <Compile Include="Forms/FrmAgregar.Designer.cs" />
-    <Compile Include="Forms/FrmListar.cs" />
-    <Compile Include="Forms/FrmListar.Designer.cs" />
-    <Compile Include="Forms/FrmModificar.cs" />
-    <Compile Include="Forms/FrmModificar.Designer.cs" />
+    
+    <!-- Entidades -->
+    <Compile Include="Clases\Entidades\Cliente.cs" />
+    <Compile Include="Clases\Entidades\Empanada.cs" />
+    <Compile Include="Clases\Entidades\Venta.cs" />
+    <Compile Include="Clases\Entidades\DetalleVenta.cs" />
+    
+    <!-- Repositorios -->
+    <Compile Include="Clases\Repositorios\IRepositorio.cs" />
+    <Compile Include="Clases\Repositorios\RepositorioClientes.cs" />
+    <Compile Include="Clases\Repositorios\RepositorioEmpanadas.cs" />
+    <Compile Include="Clases\Repositorios\RepositorioVentas.cs" />
+    
+    <!-- Servicios -->
+    <Compile Include="Clases\Servicios\ServicioZodiacal.cs" />
+    <Compile Include="Clases\Servicios\ServicioVentas.cs" />
+    
+    <!-- Utilidades -->
+    <Compile Include="Clases\Utilidades\ConexionBD.cs" />
+    
+    <!-- Formularios -->
+    <Compile Include="Forms\FrmDatosPersonales.cs" />
+    <Compile Include="Forms\FrmDatosPersonales.Designer.cs" />
+    <!-- Agregar otros formularios aquí -->
   </ItemGroup>
 
   <ItemGroup>

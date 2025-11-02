@@ -1,8 +1,9 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Configuration;
 
-namespace MuestraISAUI.Clases
+namespace MuestraISAUI.Clases.Utilidades
 {
   public static class ConexionBD
   {
@@ -27,6 +28,16 @@ namespace MuestraISAUI.Clases
         conexion.Open();
         SqlCommand comando = new SqlCommand(sql, conexion);
         comando.ExecuteNonQuery();
+      }
+    }
+    public static object EjecutarEscalar(string sql, params SqlParameter[] parametros)
+    {
+      using (var conexion = new SqlConnection(connectionString))
+      using (var comando = new SqlCommand(sql, conexion))
+      {
+        comando.Parameters.AddRange(parametros);
+        conexion.Open();
+        return comando.ExecuteScalar();
       }
     }
   }
